@@ -10,7 +10,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     James D Miles (IBM Corp.) - bug 176250, Configurator needs to handle more platform urls 
+ *     James D Miles (IBM Corp.) - bug 176250, Configurator needs to handle more platform urls
  *******************************************************************************/
 package org.eclipse.update.internal.configurator;
 
@@ -49,7 +49,7 @@ public class Utils {
 	private static final String KEY_PREFIX = "%"; //$NON-NLS-1$
 	private static final String KEY_DOUBLE_PREFIX = "%%"; //$NON-NLS-1$
 	// os
-	public static boolean isWindows = System.getProperty("os.name").startsWith("Win"); //$NON-NLS-1$ //$NON-NLS-2$	
+	public static boolean isWindows = System.getProperty("os.name").startsWith("Win"); //$NON-NLS-1$ //$NON-NLS-2$
 	static FrameworkLog log;
 	private static ServiceTracker<?, PackageAdmin> bundleTracker;
 	private static ServiceTracker<?, Location> instanceLocation;
@@ -59,14 +59,14 @@ public class Utils {
 		if (ConfigurationActivator.DEBUG)
 			System.out.println("PlatformConfig: " + s); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Creates a CoreException from some other exception.
 	 * The type of the CoreException is <code>IStatus.ERROR</code>
 	 * If the exception passed as a parameter is also a CoreException,
 	 * the new CoreException will contain all the status of the passed
 	 * CoreException.
-	 * 
+	 *
 	 * @see IStatus#ERROR
 	 * @param s exception string
 	 * @param e actual exception being reported
@@ -96,17 +96,17 @@ public class Utils {
 			}
 			status = newStatus(completeString.toString(), e);
 		}
-		return new CoreException(status); 
+		return new CoreException(status);
 	}
 
 	public static IStatus newStatus(String message, Throwable e) {
 		return new Status(IStatus.ERROR, "org.eclipse.update.configurator", IStatus.OK, message, e); //$NON-NLS-1$
 	}
-	
+
 	public static void log(String message) {
 		log(newStatus(message, null));
 	}
-	
+
 	public static void log(IStatus status) {
 		if (log != null) {
 			log.log(new FrameworkLogEntry(ConfigurationActivator.PI_CONFIGURATOR, status.getSeverity(), 0, status.getMessage(), 0, status.getException(), null));
@@ -116,7 +116,7 @@ public class Utils {
 				status.getException().printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Close the services that we were listening to.
 	 */
@@ -128,7 +128,7 @@ public class Utils {
 		if (instanceLocation != null) {
 			instanceLocation.close();
 			instanceLocation = null;
-		}		
+		}
 		if (configurationLocation != null) {
 			configurationLocation.close();
 			configurationLocation = null;
@@ -151,10 +151,10 @@ public class Utils {
 		if (nl!=null && !isMatchingLocale(nl, getNL())) return false;
 		return true;
 	}
-	
+
 	/**
 	 * Return the current operating system value.
-	 * 
+	 *
 	 * @see EnvironmentInfo#getOS()
 	 */
 	public static String getOS() {
@@ -163,7 +163,7 @@ public class Utils {
 
 	/**
 	 * Return the current windowing system value.
-	 * 
+	 *
 	 * @see EnvironmentInfo#getWS()
 	 */
 	public static String getWS() {
@@ -172,7 +172,7 @@ public class Utils {
 
 	/**
 	 * Return the current system architecture value.
-	 * 
+	 *
 	 * @see EnvironmentInfo#getOSArch()
 	 */
 	public static String getArch() {
@@ -181,18 +181,18 @@ public class Utils {
 
 	/**
 	 * Return the current NL value.
-	 * 
+	 *
 	 * @see EnvironmentInfo#getNL()
 	 */
 	public static String getNL() {
 		return getContext().getProperty(PROP_NL);
 	}
-	
+
 	/**
 	 * Returns a number that changes whenever the set of installed plug-ins
-	 * changes. This can be used for invalidating caches that are based on 
+	 * changes. This can be used for invalidating caches that are based on
 	 * the set of currently installed plug-ins. (e.g. extensions)
-	 * 
+	 *
 	 * @see PlatformAdmin#getState()
 	 * @see org.eclipse.osgi.service.resolver.State#getTimeStamp()
 	 */
@@ -206,7 +206,7 @@ public class Utils {
 
 	/**
 	 * Return the resolved bundle with the specified symbolic name.
-	 * 
+	 *
 	 * @see PackageAdmin#getBundles(String, String)
 	 */
 	public static synchronized Bundle getBundle(String symbolicName) {
@@ -238,7 +238,7 @@ public class Utils {
 
 	/**
 	 * Return the configuration location.
-	 * 
+	 *
 	 * @see Location
 	 */
 	public static synchronized Location getConfigurationLocation() {
@@ -254,14 +254,14 @@ public class Utils {
 		}
 		return configurationLocation.getService();
 	}
-	
+
 	/**
-	 * 
-	 */	
+	 *
+	 */
 	private static boolean isMatching(String candidateValues, String siteValues) {
 		if (siteValues==null) return false;
 		if ("*".equalsIgnoreCase(candidateValues)) return true; //$NON-NLS-1$
-		siteValues = siteValues.toUpperCase();		
+		siteValues = siteValues.toUpperCase();
 		StringTokenizer stok = new StringTokenizer(candidateValues, ","); //$NON-NLS-1$
 		while (stok.hasMoreTokens()) {
 			String token = stok.nextToken().toUpperCase();
@@ -269,16 +269,16 @@ public class Utils {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
-	 */	
+	 *
+	 */
 	private static boolean isMatchingLocale(String candidateValues, String locale) {
 		if (locale==null) return false;
 		if ("*".equalsIgnoreCase(candidateValues)) return true; //$NON-NLS-1$
-		
+
 		locale = locale.toUpperCase();
-		candidateValues = candidateValues.toUpperCase();	
+		candidateValues = candidateValues.toUpperCase();
 		StringTokenizer stok = new StringTokenizer(candidateValues, ","); //$NON-NLS-1$
 		while (stok.hasMoreTokens()) {
 			String candidate = stok.nextToken();
@@ -289,13 +289,13 @@ public class Utils {
 		}
 		return false;
 	}
-	
+
 	public static Locale getDefaultLocale() {
 		String nl = getNL();
 		// sanity test
 		if (nl == null)
 			return Locale.getDefault();
-		
+
 		// break the string into tokens to get the Locale object
 		StringTokenizer locales = new StringTokenizer(nl,"_"); //$NON-NLS-1$
 		if (locales.countTokens() == 1)
@@ -307,16 +307,16 @@ public class Utils {
 		else
 			return Locale.getDefault();
 	}
-	
-	
+
+
 	/**
-	 * Returns a resource string corresponding to the given argument 
+	 * Returns a resource string corresponding to the given argument
 	 * value and bundle.
 	 * If the argument value specifies a resource key, the string
 	 * is looked up in the given resource bundle. If the argument does not
 	 * specify a valid key, the argument itself is returned as the
 	 * resource string. The key lookup is performed against the
-	 * specified resource bundle. If a resource string 
+	 * specified resource bundle. If a resource string
 	 * corresponding to the key is not found in the resource bundle
 	 * the key value, or any default text following the key in the
 	 * argument value is returned as the resource string.
@@ -335,7 +335,7 @@ public class Utils {
 	 *     resolveNLString(b,"%abcd") returns "%abcd"
 	 *     resolveNLString(b,"%%name") returns "%name"
 	 * </pre>
-	 * 
+	 *
 	 * @param resourceBundle resource bundle.
 	 * @param string translatable string from model
 	 * @return string, or <code>null</code>
@@ -374,7 +374,7 @@ public class Utils {
 	public static boolean isAutomaticallyStartedBundle(String bundleURL) {
 		if (bundleURL.contains("org.eclipse.osgi")) //$NON-NLS-1$
 			return true;
-		
+
 		String osgiBundles = ConfigurationActivator.getBundleContext().getProperty("osgi.bundles"); //$NON-NLS-1$
 		StringTokenizer st = new StringTokenizer(osgiBundles, ","); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
@@ -395,12 +395,12 @@ public class Utils {
 
 	/**
 	 * Returns an absolute URL by combining a base absolute URL and another URL relative to the first one.
-	 * If the relative URL protocol does not match the base URL protocol, or if the relative URL path is not relative, 
-	 * return it as is. 
+	 * If the relative URL protocol does not match the base URL protocol, or if the relative URL path is not relative,
+	 * return it as is.
 	 */
 	public static URL makeAbsolute(URL base, URL relativeLocation) {
 		if (!"file".equals(base.getProtocol())) //$NON-NLS-1$
-			// we only deal with file: URLs 
+			// we only deal with file: URLs
 			return relativeLocation;
 		if (relativeLocation.getProtocol() != null && !relativeLocation.getProtocol().equals(base.getProtocol()))
 			// it is not relative, return as is (avoid creating garbage)
@@ -411,7 +411,7 @@ public class Utils {
 		try {
 			IPath absolutePath = IPath.fromOSString(base.getPath()).append(relativeLocation.getPath());
 			// File.toURL() is the best way to create a file: URL
-			return absolutePath.toFile().toURL();
+			return absolutePath.toFile().toURI().toURL();
 		} catch (MalformedURLException e) {
 			// cannot happen since we are building from two existing valid URLs
 			Utils.log(e.getLocalizedMessage());
@@ -461,7 +461,7 @@ public class Utils {
 	}
 
 	/**
-	 * Returns a string URL which is equivalent to the given absolute location 
+	 * Returns a string URL which is equivalent to the given absolute location
 	 * made relative to the specified base path.
 	 */
 	public static String makeRelative(URL base, String absolute) {
@@ -480,7 +480,7 @@ public class Utils {
 		if (!(isWindows && url.startsWith("file:"))) //$NON-NLS-1$
 			return url;
 		try {
-			String path = new URL(url).getPath();			
+			String path = new URL(url).getPath();
 			// normalize to not have leading / so we can check the form
 			File file = new File(path);
 			path = file.toString().replace('\\', '/');
@@ -488,17 +488,17 @@ public class Utils {
 				char[] chars = path.toCharArray();
 				chars[0] = Character.toLowerCase(chars[0]);
 				path = new String(chars);
-				return new File(path).toURL().toExternalForm();
+				return new File(path).toURI().toURL().toExternalForm();
 			}
 		} catch (MalformedURLException e) {
 			// default to original url
-		}		
+		}
 		return url;
-	}	
+	}
 
 	/**
 	 * Return the install location.
-	 * 
+	 *
 	 * @see Location
 	 */
 	public static synchronized URL getInstallURL() {
